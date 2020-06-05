@@ -30,7 +30,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/testee"
+                android:text="@string/testee1"
                 android:textColor="@color/ap_white"
                 android:textSize="@dimen/text_small"
                 android:padding="@dimen/mini_padding"
@@ -38,7 +38,7 @@
                 android:textStyle="bold"
                 android:gravity="center_horizontal"/>
             <Spinner
-                android:id="@+id/spinner"
+                android:id="@+id/spinner_testee1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/background_spinner"
@@ -56,7 +56,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/sensor_name"
+                android:text="@string/testee2"
                 android:textColor="@color/ap_white"
                 android:textSize="@dimen/text_small"
                 android:padding="@dimen/mini_padding"
@@ -64,7 +64,7 @@
                 android:textStyle="bold"
                 android:gravity="center_horizontal"/>
             <Spinner
-                android:id="@+id/spinner2"
+                android:id="@+id/spinner_testee2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/background_spinner"
@@ -73,6 +73,59 @@
                 android:layout_marginLeft="@dimen/small_padding"/>
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/small_padding">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/sensor_name1"
+                android:textColor="@color/ap_white"
+                android:textSize="@dimen/text_small"
+                android:padding="@dimen/mini_padding"
+                android:background="@drawable/bg_text_title"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"/>
+            <Spinner
+                android:id="@+id/spinner_sensor_1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_spinner"
+                android:paddingLeft="@dimen/small_padding"
+                android:paddingRight="@dimen/small_padding"
+                android:layout_marginLeft="@dimen/small_padding"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/small_padding">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/sensor_name2"
+                android:textColor="@color/ap_white"
+                android:textSize="@dimen/text_small"
+                android:padding="@dimen/mini_padding"
+                android:background="@drawable/bg_text_title"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"/>
+            <Spinner
+                android:id="@+id/spinner_sensor_2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_spinner"
+                android:paddingLeft="@dimen/small_padding"
+                android:paddingRight="@dimen/small_padding"
+                android:layout_marginLeft="@dimen/small_padding"/>
+
+        </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -137,7 +190,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Note"
+                android:text="Note1"
                 android:textColor="@color/ap_white"
                 android:textSize="@dimen/text_small"
                 android:padding="@dimen/mini_padding"
@@ -145,7 +198,7 @@
                 android:textStyle="bold"
                 android:gravity="center_horizontal"/>
             <EditText
-                android:id="@+id/etNotes"
+                android:id="@+id/etNotes_1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal"
@@ -156,6 +209,36 @@
                 android:hint="Enter your notes"
                 />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/small_padding">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Note2"
+                android:textColor="@color/ap_white"
+                android:textSize="@dimen/text_small"
+                android:padding="@dimen/mini_padding"
+                android:background="@drawable/bg_text_title"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"/>
+            <EditText
+                android:id="@+id/etNotes_2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/mini_padding"
+                android:textSize="@dimen/text_small"
+                android:background="@drawable/background_spinner"
+                android:layout_marginLeft="@dimen/small_padding"
+                android:hint="Enter your notes"
+                />
+        </LinearLayout>
+
+
         <Button
             android:id="@+id/Dialog_btnSave"
             android:layout_width="@dimen/sizeButton"

@@ -73,7 +73,8 @@
     <string name="amplitude_mv">Amplitude (mV)</string>
     <string name="timer">00 sec</string>
     <string name="saved_info">Saved Info</string>
-    <string name="testee">Testee</string>
+    <string name="testee1">Testee1</string>
+    <string name="testee2">Testee2</string>
     <string name="height">Height (cm)</string>
     <string name="weight">Weight (kg)</string>
     <string name="sensor">Sensor Information</string>
@@ -98,7 +99,8 @@
     <string name="add_user">Add user</string>
     <string name="add_sensor">Add Sensor</string>
     <string name="format_date">dd/mm/yyyy</string>
-    <string name="sensor_name">Sensor</string>
+    <string name="sensor_name1">Sensor1</string>
+    <string name="sensor_name2">Sensor2</string>
     <string name="enter_temp">Enter temperature at the moment</string>
     <string name="enter_humid">Enter humidity at the moment</string>
     <string name="menu_info">Information</string>

@@ -31,13 +31,24 @@
                 android:id="@+id/Layout_graph"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/ap_white">
+                android:background="@color/ap_white"
+                android:orientation="vertical">
                 <com.jjoe64.graphview.GraphView
-                    android:id="@+id/realtime_chart"
+                    android:id="@+id/realtime_chart_1"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_height="0dp"
                     android:background="@color/ap_white"
-                    android:layout_margin="@dimen/general_margin"/>
+                    android:layout_marginHorizontal="@dimen/general_margin"
+                    />
+                <com.jjoe64.graphview.GraphView
+                    android:id="@+id/realtime_chart_2"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_height="0dp"
+                    android:background="@color/ap_white"
+                    android:layout_marginHorizontal="@dimen/general_margin"
+                    />
             </LinearLayout>
             <TextView
                 android:layout_width="wrap_content"
@@ -87,15 +98,23 @@
                     android:layout_marginBottom="@dimen/small_padding"/>
 
                 <Button
-                    android:id="@+id/btn_connect"
+                    android:id="@+id/btn_connect_1"
                     android:layout_width="@dimen/sizeButton"
                     android:layout_height="wrap_content"
-                    android:text="Connect"
+                    android:text="CN_BLE1"
                     android:background="@drawable/clicked_button"
                     android:textColor="@color/colorAccent"
                     android:layout_marginBottom="@dimen/small_padding"
                     />
-
+                <Button
+                    android:id="@+id/btn_connect_2"
+                    android:layout_width="@dimen/sizeButton"
+                    android:layout_height="wrap_content"
+                    android:text="CN_BLE2"
+                    android:background="@drawable/clicked_button"
+                    android:textColor="@color/colorAccent"
+                    android:layout_marginBottom="@dimen/small_padding"
+                    />
                 <Button
                     android:id="@+id/btn_saveData"
                     android:layout_width="@dimen/sizeButton"
