@@ -76,6 +76,10 @@ public class MainActivity extends AppCompatActivity
     private static final int UART_PROFILE_CONNECTED = 20;
     private static final int UART_PROFILE_DISCONNECTED = 21;
 
+    //execution time parameters from the time BLE connected to the time data available
+    long startTimeBLE1, endTimeBLE1, startTimeBLE2, endTimeBLE2;
+    //check first time or not
+    int firstTimeBLE1 = 0, firstTimeBLE2 = 0;
 
     //private static EditText textView;
     private int mState = UART_PROFILE_DISCONNECTED;
@@ -134,7 +138,6 @@ public class MainActivity extends AppCompatActivity
         deviceListActivity = new DeviceListActivity();
 
         initGraphMaternal1();
-        initGraphMaternal2();
 
         btnSaveData = findViewById(R.id.btn_saveData);
         btnReset = findViewById(R.id.btn_reset);
@@ -257,7 +260,6 @@ public class MainActivity extends AppCompatActivity
                 new DataPoint(lastX2, 0)
         });
         initGraphMaternal1();
-        initGraphMaternal2();
         timeSwapBuff = 0;
         customHandler.removeCallbacks(updateTimerThread);
         timerValue.setText("00 sec");
@@ -273,39 +275,6 @@ public class MainActivity extends AppCompatActivity
         series_maternal_1.setColor(Color.RED);
         series_maternal_1.setThickness(2);
         graph.addSeries(series_maternal_1);
-
-        Viewport viewport = graph.getViewport();
-        viewport.setXAxisBoundsManual(true);
-        viewport.setYAxisBoundsManual(true);
-        viewport.setMinY(0);
-        viewport.setMaxY(100);
-        viewport.setMinX(0);
-        viewport.setMaxX(10000);
-        viewport.setScrollable(true);
-        viewport.setScalable(true);
-        graph.getGridLabelRenderer().setNumHorizontalLabels(10);
-        graph.getGridLabelRenderer().setNumVerticalLabels(5);
-        graph.getGridLabelRenderer().setHorizontalLabelsVisible(true);
-        graph.getGridLabelRenderer().setVerticalLabelsVisible(true);
-        graph.getGridLabelRenderer().setLabelsSpace(5);
-        graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
-            @Override
-            public String formatLabel(double value, boolean isValueX) {
-                if (isValueX) {
-                    // show normal x values
-                    return super.formatLabel(value, isValueX);
-                } else {
-                    // show currency for y values
-                    return super.formatLabel(value, isValueX);
-                }
-            }
-        });
-    }
-    private void initGraphMaternal2(){
-        // we get graph view instance
-        GraphView graph =  findViewById(R.id.realtime_chart_2);
-        graph.setTitleColor(Color.RED);
-        graph.setTitle("Real-time chart 2");
         series_maternal_2 = new LineGraphSeries();
         series_maternal_2.setColor(Color.BLUE);
         series_maternal_2.setThickness(2);
@@ -366,9 +335,11 @@ public class MainActivity extends AppCompatActivity
                         Log.i("Uart", "connected");
                         if(mService.mBluetoothGattBle1 != null){
                             btnConnectDisconnect1.setText("DCN_BLE1");
+                            startTimeBLE1 = System.nanoTime();
                         }
                         if(mService.mBluetoothGattBle2 !=null){
                             btnConnectDisconnect2.setText("DCN_BLE2");
+                            startTimeBLE2 = System.nanoTime();
                         }
                         if(!isSaving) {Toast.makeText(getApplicationContext(), "Connected-ble", Toast.LENGTH_LONG).show();}
                         mState = UART_PROFILE_CONNECTED;
@@ -396,9 +367,19 @@ public class MainActivity extends AppCompatActivity
 
                 if(intent.getByteArrayExtra(UartService.EXTRA_DATA_BLE1) !=null){
                     txValue1 = intent.getByteArrayExtra(UartService.EXTRA_DATA_BLE1);
+                    firstTimeBLE1++;
+                    if(firstTimeBLE1 == 1) {
+                        endTimeBLE1 = System.nanoTime();
+                        Log.i("Execution", "The execution time of BLE1 from connected state to data available state is: " + (endTimeBLE1 - startTimeBLE1));
+                    }
                 }
                 if(intent.getByteArrayExtra(UartService.EXTRA_DATA_BLE2) !=null){
                     txValue2 = intent.getByteArrayExtra(UartService.EXTRA_DATA_BLE2);
+                    firstTimeBLE2++;
+                    if(firstTimeBLE2 == 1){
+                        endTimeBLE2 = System.nanoTime();
+                        Log.i("Execution", "The execution time of BLE2 from connected state to data available state is: " + (endTimeBLE2 - startTimeBLE2));
+                    }
                 }
 
                 // firstDataBuffer = new double[3000];
@@ -408,8 +389,11 @@ public class MainActivity extends AppCompatActivity
                         emg_1[i] = (txValue1[i*4+2]&0xff&0x3f) + (txValue1[i*4+3]&0xff&0x3f)*64;
                         data1Save.add(emg_1[i]);
                         lastX1=lastX1 + 1/fs;
-                        series_maternal_1.appendData(new DataPoint(lastX1,emg_1[i]), true, 10000);
-                        Log.d(TAG, lastX1++ + ", " + emg_1[i]);
+                        //downsampling with a factor of 2
+                        if(i % 2==0){
+                            series_maternal_1.appendData(new DataPoint(lastX1,emg_1[i]), true, 10000);
+                            Log.d(TAG, lastX1++ + ", " + emg_1[i]);
+                        }
                     }
                 }
                 if(txValue2 != null){
@@ -417,8 +401,11 @@ public class MainActivity extends AppCompatActivity
                         emg_2[i] = (txValue2[i*4+2]&0xff&0x3f) + (txValue2[i*4+3]&0xff&0x3f)*64;
                         data2Save.add(emg_2[i]);
                         lastX2=lastX2 + 1/fs;
-                        series_maternal_2.appendData(new DataPoint(lastX2,emg_2[i]), true, 10000);
-                        Log.d(TAG, lastX2++ + ", " + emg_2[i]);
+                        //downsampling with a factor of 2
+                        if(i % 2== 0){
+                            series_maternal_2.appendData(new DataPoint(lastX2,emg_2[i]), true, 10000);
+                            Log.d(TAG, lastX2++ + ", " + emg_2[i]);
+                        }
                     }
                 }
             }
@@ -784,50 +771,6 @@ public class MainActivity extends AppCompatActivity
                 }
             });
 
-
-        //Spinner setup for selecting testee_2
-            final Spinner spinner_testee2 = dialog.findViewById(R.id.spinner_testee2);
-            ArrayAdapter<String> adapter2  = new ArrayAdapter<String>(
-                    this,
-                    R.layout.custom_spinner,
-                    listUser
-            ) {
-                @Override
-                public boolean isEnabled(int position){
-                    if(position == 0) { return false; }
-                    else { return true; }
-                }
-                @Override
-                public View getDropDownView(int position, View convertView,
-                                            ViewGroup parent) {
-                    View view = super.getDropDownView(position, convertView, parent);
-                    TextView tv = (TextView) view;
-                    if(position == 0){
-                        // Set the hint text color gray
-                        tv.setTextColor(Color.GRAY);
-                    }
-                    else { tv.setTextColor(Color.BLACK); }
-                    return view;
-                }
-            };
-            adapter2.setDropDownViewResource(R.layout.custom_spinner_dropdown);
-            spinner_testee2.setAdapter(adapter2);
-            spinner_testee2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                    String selectedUser_2 = spinner_testee2.getItemAtPosition(position).toString();
-                    if (selectedUser_2.equals(addUser)) {
-                        Intent intentAddSensor = new Intent(MainActivity.this, Add_User_Activity.class);
-                        startActivity(intentAddSensor);
-                        dialog.dismiss();
-                    }
-                }
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                }
-            });
-
         //Spinner setup for selecting sensor_1
         final Spinner spinner_sensor1 = dialog.findViewById(R.id.spinner_sensor_1);
         ArrayAdapter<String> adapter3  = new ArrayAdapter<String>(
@@ -870,59 +813,13 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-
-        //Spinner setup for selecting sensor_2
-        final Spinner spinner_sensor2 = dialog.findViewById(R.id.spinner_sensor_2);
-        ArrayAdapter<String> adapter4  = new ArrayAdapter<String>(
-                this,
-                R.layout.custom_spinner,
-                listSensor
-        ) {
-            @Override
-            public boolean isEnabled(int position){
-                if(position == 0) { return false; }
-                else { return true; }
-            }
-            @Override
-            public View getDropDownView(int position, View convertView,
-                                        ViewGroup parent) {
-                View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-                if(position == 0){
-                    // Set the hint text color gray
-                    tv.setTextColor(Color.GRAY);
-                }
-                else { tv.setTextColor(Color.BLACK); }
-                return view;
-            }
-        };
-        adapter4.setDropDownViewResource(R.layout.custom_spinner_dropdown);
-        spinner_sensor2.setAdapter(adapter4);
-        spinner_sensor2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                String selectedSensor_2 = spinner_sensor2.getItemAtPosition(position).toString();
-                if (selectedSensor_2.equals(addSensor)) {
-                    Intent intentAddSensor = new Intent(MainActivity.this, Add_User_Activity.class);
-                    startActivity(intentAddSensor);
-                    dialog.dismiss();
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
         Button btnSave = dialog.findViewById(R.id.Dialog_btnSave);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String selectedUser_1 = spinner_testee1.getSelectedItem().toString().trim();
-                String selectedUser_2 = spinner_testee2.getSelectedItem().toString().trim();
 
                 String selectedSensor_1 = spinner_sensor1.getSelectedItem().toString().trim();
-                String selectedSensor_2 = spinner_sensor2.getSelectedItem().toString().trim();
 
                 et_temp = dialog.findViewById(R.id.temp);
                 et_humid = dialog.findViewById(R.id.humid);
@@ -966,24 +863,20 @@ public class MainActivity extends AppCompatActivity
 
 
                 if((!selectedUser_1.equals("Select testee")) &&
-                        (!selectedUser_2.equals("Select testee")) &&
                         (!selectedSensor_1.equals("Select sensor")) &&
-                        (!selectedSensor_2.equals("Select sensor")) &&
                         (!temp.equals("")) &&
                         (!humid.equals(""))){
                     UserFormat selectedUserObject_1 = dbManager.getUser(selectedUser_1);
-                    UserFormat selectedUserObject_2 = dbManager.getUser(selectedUser_2);
 
                     SensorFormat selectedSensorObject_1 = dbManager.getSensor(selectedSensor_1);
-                    SensorFormat selectedSensorObject_2 = dbManager.getSensor(selectedSensor_2);
 
                     saveData.save(data1Save, selectedUser_1 , selectedSensor_1 ,
                             selectedUserObject_1.getHeight()+"cm, "+selectedUserObject_1.getWeight()+"kg, R(body) = "+selectedUserObject_1.getBody_res()+"KOhm",
                             "M= " + selectedSensorObject_1.getResMid()+", E= " + selectedSensorObject_1.getResEnd()+", R= "+selectedSensorObject_1.getResRef()+"KOhm",
                             "Temperature: " + temp + "°C, RH: " + humid + "%", notes_1 );
-                    saveData.save(data2Save, selectedUser_2 , selectedSensor_2 ,
-                            selectedUserObject_2.getHeight()+"cm, "+selectedUserObject_2.getWeight()+"kg, R(body) = "+selectedUserObject_2.getBody_res()+"KOhm",
-                            "M= " + selectedSensorObject_2.getResMid()+", E= " + selectedSensorObject_2.getResEnd()+", R= "+selectedSensorObject_2.getResRef()+"KOhm",
+                    saveData.save(data2Save, selectedUser_1 , selectedSensor_1 ,
+                            selectedUserObject_1.getHeight()+"cm, "+selectedUserObject_1.getWeight()+"kg, R(body) = "+selectedUserObject_1.getBody_res()+"KOhm",
+                            "M= " + selectedSensorObject_1.getResMid()+", E= " + selectedSensorObject_1.getResEnd()+", R= "+selectedSensorObject_1.getResRef()+"KOhm",
                             "Temperature: " + temp + "°C, RH: " + humid + "%", notes_2 );
 
                     Toast.makeText(MainActivity.this, "Data saved successfully",Toast.LENGTH_SHORT).show();
