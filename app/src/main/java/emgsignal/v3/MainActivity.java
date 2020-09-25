@@ -167,14 +167,14 @@ public class MainActivity extends AppCompatActivity
                 }
                 else {
 
-                    if (btnConnectDisconnect1.getText().equals("CN_BLE1")){
+                    if (btnConnectDisconnect1.getText().equals("Connect1")){
                         Intent newIntent = new Intent(MainActivity.this, DeviceListActivity.class); // chuyen qua device list activity
                         startActivityForResult(newIntent, REQUEST_SELECT_DEVICE);
 
                     } else {
                         //Disconnect button pressed
                         mService.disconnectBLE1();
-                        btnConnectDisconnect1.setText("CN_BLE1");
+                        btnConnectDisconnect1.setText("Connect1");
                     }
                 }
             }
@@ -191,14 +191,14 @@ public class MainActivity extends AppCompatActivity
                 }
                 else {
 
-                    if (btnConnectDisconnect2.getText().equals("CN_BLE2")){
+                    if (btnConnectDisconnect2.getText().equals("Connect2")){
                         Intent newIntent = new Intent(MainActivity.this, DeviceListActivity.class); // chuyen qua device list activity
                         startActivityForResult(newIntent, REQUEST_SELECT_DEVICE);
 
                     } else {
                         //Disconnect button pressed
                         mService.disconnectBLE2();
-                        btnConnectDisconnect2.setText("CN_BLE2");
+                        btnConnectDisconnect2.setText("Connect2");
                     }
                 }
             }
@@ -225,8 +225,8 @@ public class MainActivity extends AppCompatActivity
                         timeSwapBuff = 0;
                         customHandler.removeCallbacks(updateTimerThread);
                         mService.disconnect();
-                        btnConnectDisconnect1.setText("CN_BLE1");
-                        btnConnectDisconnect2.setText("CN_BLE2");
+                        btnConnectDisconnect1.setText("Connect1");
+                        btnConnectDisconnect2.setText("Connect2");
                         btnSaveData.setText("Save");
                         showdialog();
                     }
@@ -238,8 +238,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 mService.disconnect();
-                btnConnectDisconnect1.setText("CN_BLE1");
-                btnConnectDisconnect2.setText("CN_BLE2");
+                btnConnectDisconnect1.setText("Connect1");
+                btnConnectDisconnect2.setText("Connect2");
                 btnSaveData.setText("Save");
                 resetData();
             }
@@ -334,15 +334,17 @@ public class MainActivity extends AppCompatActivity
                     public void run() {
                         Log.i("Uart", "connected");
                         if(mService.mBluetoothGattBle1 != null){
-                            btnConnectDisconnect1.setText("DCN_BLE1");
+                            btnConnectDisconnect1.setText("Disconnect1");
                             startTimeBLE1 = System.nanoTime();
                         }
                         if(mService.mBluetoothGattBle2 !=null){
-                            btnConnectDisconnect2.setText("DCN_BLE2");
+                            btnConnectDisconnect2.setText("Disconnect2");
                             startTimeBLE2 = System.nanoTime();
                         }
-                        if(!isSaving) {Toast.makeText(getApplicationContext(), "Connected-ble", Toast.LENGTH_LONG).show();}
+                        if(!isSaving) {Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_LONG).show();}
                         mState = UART_PROFILE_CONNECTED;
+                        // Choose mode
+                        dialogMode();
                     }
                 });
             }
@@ -694,6 +696,41 @@ public class MainActivity extends AppCompatActivity
             Log.e("EXTERNAL_STORAGE", ex.getMessage(), ex);
         }
     }
+
+    /** Dialog to choose mode for testing: Realtime or Pilot mode */
+    public void dialogMode() {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.mode_options);
+        Window window = dialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+        TextView realtimeMode = dialog.findViewById(R.id.realtimeMode);
+        TextView pilotMode = dialog.findViewById(R.id.pilotMode);
+        realtimeMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mService != null) {
+                    mService.writeRXCharacteristic1("r");
+                    mService.writeRXCharacteristic2("r");
+                    Log.i(TAG, "onClick: Plot real-time signal");
+                    dialog.dismiss();
+                }
+            }
+        });
+        pilotMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mService != null) {
+                    mService.writeRXCharacteristic1("p"+saveData.getDate());
+                    mService.writeRXCharacteristic2("p"+saveData.getDate());
+                    Log.i(TAG, "onClick: Pilot Mode");
+                    dialog.dismiss();
+                }
+            }
+        });
+    }
+
 
     public void showdialog() {
         final Dialog dialog = new Dialog(this);

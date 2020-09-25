@@ -47,6 +47,8 @@ public class UartService extends Service {
 
     BluetoothManager mBluetoothManager;
     BluetoothAdapter mBluetoothAdapter;
+    public BluetoothGatt mBluetoothGattBle1;
+    public BluetoothGatt mBluetoothGattBle2;
 
     public static final int STATE_DISCONNECTED = 0;
     public static final int STATE_CONNECTING = 1;
@@ -75,8 +77,7 @@ public class UartService extends Service {
     public static final UUID RX_CHAR_UUID = UUID.fromString("6e400002-b5a3-f393-e0a9-e50e24dcca9e");
     public static final UUID TX_CHAR_UUID = UUID.fromString("6e400003-b5a3-f393-e0a9-e50e24dcca9e");
 
-    public BluetoothGatt mBluetoothGattBle1;
-    public BluetoothGatt mBluetoothGattBle2;
+
 
     private int mConnectionStateBle1 = STATE_DISCONNECTED;
     private int mConnectionStateBle2 = STATE_DISCONNECTED;
@@ -391,4 +392,43 @@ public class UartService extends Service {
     public void showMessage(String msg) {
         Log.e(TAG, msg);
     }
+
+    public void writeRXCharacteristic1(String value)
+    {
+        if (mBluetoothAdapter == null || mBluetoothGattBle1 == null) {
+            Log.w(TAG, "BluetoothAdapter not initialized");
+            return;
+        }
+        BluetoothGattService RxService = mBluetoothGattBle1.getService(RX_SERVICE_UUID);
+
+        if (RxService == null) {
+            showMessage("Rx service not found!");
+            return;
+        }
+        BluetoothGattCharacteristic RxChar = RxService.getCharacteristic(RX_CHAR_UUID);
+
+        RxChar.setValue(value);
+        boolean status = mBluetoothGattBle1.writeCharacteristic(RxChar);
+        Log.d(TAG, "write TXchar - status=" + status);
+    }
+
+    public void writeRXCharacteristic2(String value)
+    {
+        if (mBluetoothAdapter == null || mBluetoothGattBle2 == null) {
+            Log.w(TAG, "BluetoothAdapter not initialized");
+            return;
+        }
+        BluetoothGattService RxService = mBluetoothGattBle2.getService(RX_SERVICE_UUID);
+
+        if (RxService == null) {
+            showMessage("Rx service not found!");
+            return;
+        }
+        BluetoothGattCharacteristic RxChar = RxService.getCharacteristic(RX_CHAR_UUID);
+
+        RxChar.setValue(value);
+        boolean status = mBluetoothGattBle2.writeCharacteristic(RxChar);
+        Log.d(TAG, "write TXchar - status=" + status);
+    }
+
 }
