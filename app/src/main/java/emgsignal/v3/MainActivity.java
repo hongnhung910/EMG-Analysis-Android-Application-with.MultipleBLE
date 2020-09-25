@@ -340,11 +340,13 @@ public class MainActivity extends AppCompatActivity
                         if(mService.mBluetoothGattBle2 !=null){
                             btnConnectDisconnect2.setText("Disconnect2");
                             startTimeBLE2 = System.nanoTime();
+                            dialogMode();
                         }
+
                         if(!isSaving) {Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_LONG).show();}
                         mState = UART_PROFILE_CONNECTED;
                         // Choose mode
-                        dialogMode();
+
                     }
                 });
             }
@@ -394,7 +396,8 @@ public class MainActivity extends AppCompatActivity
                         //downsampling with a factor of 2
                         if(i % 2==0){
                             series_maternal_1.appendData(new DataPoint(lastX1,emg_1[i]), true, 10000);
-                            Log.d(TAG, lastX1++ + ", " + emg_1[i]);
+                            lastX1++;
+                            Log.d(TAG, lastX1 + ", " + emg_1[i]);
                         }
                     }
                 }
@@ -406,7 +409,8 @@ public class MainActivity extends AppCompatActivity
                         //downsampling with a factor of 2
                         if(i % 2== 0){
                             series_maternal_2.appendData(new DataPoint(lastX2,emg_2[i]), true, 10000);
-                            Log.d(TAG, lastX2++ + ", " + emg_2[i]);
+                            lastX2++;
+                            Log.d(TAG, lastX2 + ", " + emg_2[i]);
                         }
                     }
                 }

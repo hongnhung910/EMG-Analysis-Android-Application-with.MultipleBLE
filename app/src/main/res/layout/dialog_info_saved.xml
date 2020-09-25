@@ -30,7 +30,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/testee1"
+                android:text="@string/testee"
                 android:textColor="@color/ap_white"
                 android:textSize="@dimen/text_small"
                 android:padding="@dimen/mini_padding"
@@ -47,32 +47,8 @@
                 android:layout_marginLeft="@dimen/small_padding"/>
 
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/small_padding">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/sensor_name1"
-                android:textColor="@color/ap_white"
-                android:textSize="@dimen/text_small"
-                android:padding="@dimen/mini_padding"
-                android:background="@drawable/bg_text_title"
-                android:textStyle="bold"
-                android:gravity="center_horizontal"/>
-            <Spinner
-                android:id="@+id/spinner_sensor_1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/background_spinner"
-                android:paddingLeft="@dimen/small_padding"
-                android:paddingRight="@dimen/small_padding"
-                android:layout_marginLeft="@dimen/small_padding"/>
 
-        </LinearLayout>
-        <LinearLayout
+       <!-- <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -99,8 +75,8 @@
                 android:inputType="number"
                 android:hint="@string/enter_temp"
                 />
-        </LinearLayout>
-        <LinearLayout
+        </LinearLayout>-->
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -127,7 +103,7 @@
                 android:layout_marginLeft="@dimen/small_padding"
                 android:hint="@string/enter_humid"
                 />
-        </LinearLayout>
+        </LinearLayout>-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

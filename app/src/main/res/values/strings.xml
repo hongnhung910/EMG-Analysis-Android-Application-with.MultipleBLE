@@ -73,8 +73,7 @@
     <string name="amplitude_mv">Amplitude (mV)</string>
     <string name="timer">00 sec</string>
     <string name="saved_info">Saved Info</string>
-    <string name="testee1">Testee1</string>
-    <string name="testee2">Testee2</string>
+    <string name="testee">Testee</string>
     <string name="height">Height (cm)</string>
     <string name="weight">Weight (kg)</string>
     <string name="sensor">Sensor Information</string>
