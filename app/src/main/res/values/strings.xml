@@ -78,7 +78,7 @@
     <string name="weight">Weight (kg)</string>
     <string name="sensor">Sensor Information</string>
     <string name="humid">Relative humidity (RH%)</string>
-    <string name="body_resistance">Body Resistance (KOhm)</string>
+    <string name="gender">Gender</string>
     <string name="centimeter">cm</string>
     <string name="name">Name</string>
     <string name="TypeSensor">Type of Sensor</string>
@@ -104,7 +104,8 @@
     <string name="enter_humid">Enter humidity at the moment</string>
     <string name="menu_info">Information</string>
     <string name="fit_amplitude">Fit Amplitude</string>
-
+    <string name="titleDialog1">Choose Testee</string>
+    <string name="createUser"><a>Create new user</a></string>
     <string-array name="FFTgraphs">
         <item>FFT Unit</item>
         <item>DB/Hz</item>

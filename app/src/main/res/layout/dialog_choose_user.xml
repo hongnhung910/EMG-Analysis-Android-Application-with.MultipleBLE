@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/saved_info"
+        android:text="@string/titleDialog1"
         android:textSize="@dimen/text_normal"
         android:textStyle="bold"
         android:textColor="@color/ap_white"/>
@@ -32,8 +32,8 @@
                 android:layout_height="match_parent"
                 android:text="@string/testee"
                 android:textColor="@color/ap_white"
-                android:textSize="@dimen/text_small"
-                android:padding="@dimen/mini_padding"
+                android:textSize="@dimen/text_normal"
+                android:padding="@dimen/small_padding"
                 android:background="@drawable/bg_text_title"
                 android:textStyle="bold"
                 android:gravity="center_horizontal"/>
@@ -104,7 +104,7 @@
                 android:hint="@string/enter_humid"
                 />
         </LinearLayout>-->
-        <LinearLayout
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -130,9 +130,9 @@
                 android:layout_marginLeft="@dimen/small_padding"
                 android:hint="Enter your notes"
                 />
-        </LinearLayout>
+        </LinearLayout>-->
 
-        <LinearLayout
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -158,18 +158,28 @@
                 android:layout_marginLeft="@dimen/small_padding"
                 android:hint="Enter your notes"
                 />
-        </LinearLayout>
+        </LinearLayout>-->
 
 
         <Button
-            android:id="@+id/Dialog_btnSave"
+            android:id="@+id/dl_btnStart"
             android:layout_width="@dimen/sizeButton"
             android:layout_height="wrap_content"
             android:background="@drawable/clicked_button"
-            android:text="@string/save"
+            android:text="Start"
             android:textColor="@color/ap_white"
             android:textSize="@dimen/text_small"
             android:layout_marginTop="@dimen/small_padding"/>
+        <TextView
+            android:id="@+id/dl_btnCreateUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/createUser"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginTop="@dimen/small_padding"
+            android:textColorLink="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:clickable="true"/>
 
     </LinearLayout>
 

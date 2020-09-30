@@ -24,9 +24,11 @@
             android:padding="@dimen/mini_padding"
             android:text="Real-time Mode"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/text_title"
+            android:textSize="@dimen/text_normal"
             android:textStyle="bold"
-            android:background="@drawable/clicked_lightbutton"/>
+            android:background="@drawable/clicked_lightbutton"
+            android:layout_marginLeft="@dimen/general_margin"
+            android:layout_marginRight="@dimen/general_margin"/>
 
         <TextView
             android:id="@+id/pilotMode"
@@ -34,12 +36,14 @@
             android:layout_height="match_parent"
             android:text="Pilot Mode"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/text_title"
+            android:textSize="@dimen/text_normal"
             android:padding="@dimen/mini_padding"
             android:textStyle="bold"
             android:gravity="center"
             android:layout_marginTop="@dimen/small_padding"
-            android:background="@drawable/clicked_lightbutton"/>
+            android:background="@drawable/clicked_lightbutton"
+            android:layout_marginLeft="@dimen/general_margin"
+            android:layout_marginRight="@dimen/general_margin"/>
     </LinearLayout>
 
 </LinearLayout>

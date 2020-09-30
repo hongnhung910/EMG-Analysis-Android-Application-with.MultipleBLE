@@ -206,6 +206,7 @@ public class DBManager extends SQLiteOpenHelper {
         user.setId(id);
         return user;
     }
+
     public int NumberOfUsers() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT  * FROM " + TABLE_USER, null);

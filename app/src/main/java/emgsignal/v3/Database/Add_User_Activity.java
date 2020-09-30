@@ -1,6 +1,7 @@
 package emgsignal.v3.Database;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,19 +12,21 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import emgsignal.v3.MainActivity;
 import emgsignal.v3.R;
 
 public class Add_User_Activity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-    private EditText testee_name, testee_height, testee_weight, testee_res, testee_birthday;
+    private EditText testee_name, testee_height, testee_weight, testee_gender, testee_birthday;
     private String testee_id;
     private Button btn_addUser;
     private DBManager dbManager;
     private UserFormat userFormat;
     SimpleDateFormat dateFormatter;
-
+    public ArrayList<String> getUsersId = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +35,7 @@ public class Add_User_Activity extends AppCompatActivity implements DatePickerDi
         testee_name = findViewById(R.id.testee_name);
         testee_height = findViewById(R.id.testee_height);
         testee_weight = findViewById(R.id.testee_weight);
-        testee_res = findViewById(R.id.testee_R);
+        //testee_gender = findViewById(R.id.testee_R);
         btn_addUser = findViewById(R.id.btn_addUser);
         testee_birthday = findViewById(R.id.testee_birthday);
         dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
@@ -52,13 +55,18 @@ public class Add_User_Activity extends AppCompatActivity implements DatePickerDi
                         testee_birthday.getText().toString().trim(),
                         testee_height.getText().toString().trim(),
                         testee_weight.getText().toString().trim(),
-                        testee_res.getText().toString().trim(),
+                        testee_gender.getText().toString().trim(),
                         testee_id)
                 );
                 EmptyField();
                 Toast.makeText(Add_User_Activity.this,"User created successfully: ID = " + testee_id, Toast.LENGTH_SHORT).show();
+                getUsersId = dbManager.getAllUsersId();
+                //Transmit List user ID back to MainActivity
+                Intent intent = new Intent(Add_User_Activity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
+
     }
     private void showDatePickerDialog(){
         Calendar newCalendar = Calendar.getInstance();
@@ -78,6 +86,6 @@ public class Add_User_Activity extends AppCompatActivity implements DatePickerDi
         testee_birthday.setText("");
         testee_height.setText("");
         testee_weight.setText("");
-        testee_res.setText("");
+        testee_gender.setText("");
     }
 }

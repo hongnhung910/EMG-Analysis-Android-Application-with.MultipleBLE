@@ -130,11 +130,31 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/body_resistance"
+                android:text="@string/gender"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="@dimen/text_small"
-                android:padding="@dimen/small_padding"/>
-            <EditText
+                android:padding="@dimen/small_padding"
+                android:layout_marginRight="@dimen/general_margin"/>
+            <RadioGroup
+                android:id="@+id/radioGroup_character"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioBtn_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Male" />
+
+                <RadioButton
+                    android:id="@+id/radioBtn_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Famale"
+                    android:layout_marginLeft="@dimen/general_margin"/>
+            </RadioGroup>
+            <!--<EditText
                 android:id="@+id/testee_R"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -143,7 +163,7 @@
                 android:textSize="@dimen/text_small"
                 android:inputType="number"
                 android:maxLines="1"
-                />
+                />-->
         </LinearLayout>
         <Button
             android:id="@+id/btn_addUser"

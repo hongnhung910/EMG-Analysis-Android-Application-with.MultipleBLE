@@ -58,10 +58,8 @@ import emgsignal.v3.BLE.DeviceListActivity;
 import emgsignal.v3.Database.Add_Sensor_Activity;
 import emgsignal.v3.Database.Add_User_Activity;
 import emgsignal.v3.Database.DBManager;
-import emgsignal.v3.Database.SensorFormat;
 import emgsignal.v3.Database.UserFormat;
 import emgsignal.v3.SavedDataProcessing.ExternalStorageUtil;
-import emgsignal.v3.SavedDataProcessing.ListFilesActivity;
 import emgsignal.v3.SavedDataProcessing.ListFolderActivity;
 import emgsignal.v3.SavedDataProcessing.SaveData;
 import emgsignal.v3.SignalProcessing.IIR_Filter;
@@ -121,9 +119,11 @@ public class MainActivity extends AppCompatActivity
     long timeInMilliseconds = 0L;
     long timeSwapBuff = 0L;
     long updatedTime = 0L;
-    private EditText et_temp , et_humid, et_notes_1, et_notes_2;
-    private ArrayList<String> listUser, listSensor;
+    private ArrayList<String> listUser;
+    ArrayList<String> getUsersId = new ArrayList<>();
+    private String id_testee;
     private int secs;
+    DBManager dbManager = new DBManager(MainActivity.this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity
 
         //Create save data Folder
         CreateSaveFolder();
-
+        dialogChooseUser();
         deviceListActivity = new DeviceListActivity();
 
         initGraphMaternal1();
@@ -228,7 +228,12 @@ public class MainActivity extends AppCompatActivity
                         btnConnectDisconnect1.setText("Connect1");
                         btnConnectDisconnect2.setText("Connect2");
                         btnSaveData.setText("Save");
-                        showdialog();
+                        //Save data
+                        UserFormat selectedUserObject_1 = dbManager.getUser(id_testee);
+                        saveData.save(data1Save,selectedUserObject_1.getName(),selectedUserObject_1.getBirthday());
+                        saveData.save(data2Save,selectedUserObject_1.getName(),selectedUserObject_1.getBirthday());
+                        Toast.makeText(MainActivity.this, "Data saved successfully",Toast.LENGTH_SHORT).show();
+
                     }
                 }
             }
@@ -390,7 +395,7 @@ public class MainActivity extends AppCompatActivity
 
                 if(txValue1 != null){
                     for (int i = 0; i < 10; i++) {
-                        emg_1[i] = (txValue1[i*4+2]&0xff&0x3f) + (txValue1[i*4+3]&0xff&0x3f)*64;
+                        emg_1[i] = (txValue1[i*2]&0xff&0x3f) + (txValue1[i*2+1]&0xff&0x3f)*64;
                         data1Save.add(emg_1[i]);
                         lastX1=lastX1 + 1/fs;
                         //downsampling with a factor of 2
@@ -403,7 +408,7 @@ public class MainActivity extends AppCompatActivity
                 }
                 if(txValue2 != null){
                     for (int i = 0; i < 10; i++) {
-                        emg_2[i] = (txValue2[i*4+2]&0xff&0x3f) + (txValue2[i*4+3]&0xff&0x3f)*64;
+                        emg_2[i] = (txValue2[i*2]&0xff&0x3f) + (txValue2[i*2+1]&0xff&0x3f)*64;
                         data2Save.add(emg_2[i]);
                         lastX2=lastX2 + 1/fs;
                         //downsampling with a factor of 2
@@ -722,12 +727,13 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+
         pilotMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(mService != null) {
-                    mService.writeRXCharacteristic1("p"+saveData.getDate());
-                    mService.writeRXCharacteristic2("p"+saveData.getDate());
+                    mService.writeRXCharacteristic1("p"+saveData.getDate()+"_"+id_testee);
+                    mService.writeRXCharacteristic2("p"+saveData.getDate()+"_"+id_testee);
                     Log.i(TAG, "onClick: Pilot Mode");
                     dialog.dismiss();
                 }
@@ -735,10 +741,93 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-
-    public void showdialog() {
+    public void dialogChooseUser() {
         final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.dialog_info_saved);
+        dialog.setContentView(R.layout.dialog_choose_user);
+        Window window = dialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+        Button btnStart = dialog.findViewById(R.id.dl_btnStart);
+        TextView btnCreateUser = dialog.findViewById(R.id.dl_btnCreateUser);
+        final String addUser = "Add user info before saving data";
+        final DBManager dbManager = new DBManager(MainActivity.this);
+        listUser = new ArrayList<>();
+        listUser.add("Select testee");
+
+        //ArrayList<String> getUsersId = new ArrayList<>();
+        getUsersId = dbManager.getAllUsersId();
+
+        if (getUsersId.isEmpty()) {
+            listUser.add(addUser);
+        } else {
+            for (int i = 0; i < dbManager.NumberOfUsers(); i++) {
+                listUser.add(getUsersId.get(i));
+            }
+        }
+
+        //Spinner setup for selecting user
+        final Spinner spinner_testee = dialog.findViewById(R.id.spinner_testee1);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this,
+                R.layout.custom_spinner,
+                listUser
+        ) {
+            @Override
+            public boolean isEnabled(int position){
+                if(position == 0) { return false; }
+                else { return true; }
+            }
+            @Override
+            public View getDropDownView(int position, View convertView,
+                                        ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+                if(position == 0){
+                    // Set the hint text color gray
+                    tv.setTextColor(Color.GRAY);
+                }
+                else { tv.setTextColor(Color.BLACK); }
+                return view;
+            }
+        };
+        adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown);
+        spinner_testee.setAdapter(adapter);
+        spinner_testee.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                String selectedUser_1 = spinner_testee.getItemAtPosition(position).toString();
+                if (selectedUser_1.equals(addUser)) {
+                    Intent intentAddUser = new Intent(MainActivity.this, Add_User_Activity.class);
+                    startActivity(intentAddUser);
+                }
+                else id_testee = selectedUser_1;
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, id_testee,Toast.LENGTH_LONG ).show();
+                dialog.dismiss();
+            }
+        });
+        btnCreateUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentAddUser = new Intent(MainActivity.this, Add_User_Activity.class);
+                startActivity(intentAddUser);
+            }
+        });
+
+    }
+
+    /*public void showdialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_choose_user);
         Window window = dialog.getWindow();
         window.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.setCanceledOnTouchOutside(false);
@@ -929,7 +1018,7 @@ public class MainActivity extends AppCompatActivity
                     addFailed.show();
                 }
             }
-        });
-    }
+        });*/
+    //}
 
 }
