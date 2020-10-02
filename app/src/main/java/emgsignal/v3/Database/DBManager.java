@@ -10,13 +10,13 @@ import java.util.ArrayList;
 
 public class DBManager extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "EMG DATABASE";
+    private static final String DATABASE_NAME = "EMG DATABASE VER2";
     private static final String TABLE_USER = "users";
     private static final String NAME = "name";
     private static final String BIRTHDAY = "birthday";
     private static final String HEIGHT = "height";
     private static final String WEIGHT = "weight";
-    private static final String BODY_RES = "body_resistance";
+    private static final String GENDER = "gender";
     private static final String USER_ID = "userID";
     private static final String TABLE_SENSOR = "sensors";
     private static final String TYPE = "type";
@@ -36,7 +36,7 @@ public class DBManager extends SQLiteOpenHelper {
             BIRTHDAY + " TEXT, " +
             HEIGHT + " TEXT, " +
             WEIGHT + " TEXT, " +
-            BODY_RES + " TEXT, " +
+            GENDER + " TEXT, " +
             USER_ID + " TEXT) ";
     private String CREATE_TABLE_SENSOR = "CREATE TABLE " + TABLE_SENSOR + " (" +
             TYPE + " TEXT, " +
@@ -67,7 +67,7 @@ public class DBManager extends SQLiteOpenHelper {
         values.put(BIRTHDAY,user.getBirthday());
         values.put(HEIGHT,user.getHeight());
         values.put(WEIGHT,user.getWeight());
-        values.put(BODY_RES,user.getBody_res());
+        values.put(GENDER,user.getGender());
         values.put(USER_ID,user.getId());
         db.insert(TABLE_USER,null,values);
         db.close();
@@ -100,7 +100,7 @@ public class DBManager extends SQLiteOpenHelper {
                 user.setBirthday(cursor.getString(1));
                 user.setHeight(cursor.getString(2));
                 user.setWeight(cursor.getString(3));
-                user.setBody_res(cursor.getString(4));
+                user.setGender(cursor.getString(4));
                 user.setId(cursor.getString(5));
 
                 listUsers.add(user);
@@ -191,7 +191,7 @@ public class DBManager extends SQLiteOpenHelper {
     public UserFormat getUser(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_USER, new String[] { NAME, BIRTHDAY, HEIGHT, WEIGHT, BODY_RES },
+        Cursor cursor = db.query(TABLE_USER, new String[] { NAME, BIRTHDAY, HEIGHT, WEIGHT, GENDER },
                 USER_ID + "=?",
                 new String[] { id }, null, null, null, null);
         if (cursor != null)
@@ -202,7 +202,7 @@ public class DBManager extends SQLiteOpenHelper {
         user.setBirthday(cursor.getString(1));
         user.setHeight(cursor.getString(2));
         user.setWeight(cursor.getString(3));
-        user.setBody_res(cursor.getString(4));
+        user.setGender(cursor.getString(4));
         user.setId(id);
         return user;
     }
@@ -235,11 +235,11 @@ public class DBManager extends SQLiteOpenHelper {
         );
         return sensor;
     }
+
     /*public void clearDatabase() {
         SQLiteDatabase db = this.getWritableDatabase();
         String clearDBQuery = "DELETE FROM "+TABLE_USER;
         db.execSQL(clearDBQuery);
         Log.i(TAG, "clearDatabase: Cleared");
     }*/
-
 }

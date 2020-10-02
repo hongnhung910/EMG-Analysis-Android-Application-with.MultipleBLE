@@ -136,7 +136,7 @@
                 android:padding="@dimen/small_padding"
                 android:layout_marginRight="@dimen/general_margin"/>
             <RadioGroup
-                android:id="@+id/radioGroup_character"
+                android:id="@+id/radioGroup_Gender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">

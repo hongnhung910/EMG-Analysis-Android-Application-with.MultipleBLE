@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -20,7 +22,10 @@ import emgsignal.v3.MainActivity;
 import emgsignal.v3.R;
 
 public class Add_User_Activity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-    private EditText testee_name, testee_height, testee_weight, testee_gender, testee_birthday;
+    private EditText testee_name, testee_height, testee_weight, testee_birthday;
+    private String testee_gender;
+    private RadioGroup radioGroup_gender;
+    private RadioButton radioBtn_male, radioBtn_female;
     private String testee_id;
     private Button btn_addUser;
     private DBManager dbManager;
@@ -32,12 +37,17 @@ public class Add_User_Activity extends AppCompatActivity implements DatePickerDi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_user);
 
+        radioGroup_gender = findViewById(R.id.radioGroup_Gender);
+        radioBtn_male = findViewById(R.id.radioBtn_male);
+        radioBtn_female = findViewById(R.id.radioBtn_female);
+
         testee_name = findViewById(R.id.testee_name);
         testee_height = findViewById(R.id.testee_height);
         testee_weight = findViewById(R.id.testee_weight);
-        //testee_gender = findViewById(R.id.testee_R);
         btn_addUser = findViewById(R.id.btn_addUser);
         testee_birthday = findViewById(R.id.testee_birthday);
+        radioGroup_gender = findViewById(R.id.radioGroup_Gender);
+
         dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         testee_birthday.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,13 +59,16 @@ public class Add_User_Activity extends AppCompatActivity implements DatePickerDi
             @Override
             public void onClick(View v) {
                 dbManager = new DBManager(Add_User_Activity.this);
-                testee_id = testee_name.getText().toString().trim()+"-"+testee_birthday.getText().toString().replace("/", "");
+                testee_id = testee_name.getText().toString().trim()+""+testee_birthday.getText().toString().replace("/", "");
+                int selectedGender = radioGroup_gender.getCheckedRadioButtonId();
+                if (selectedGender == R.id.radioBtn_male) testee_gender = "male";
+                else testee_gender = "female";
                 dbManager.addUser(new UserFormat(
                         testee_name.getText().toString().trim(),
                         testee_birthday.getText().toString().trim(),
                         testee_height.getText().toString().trim(),
                         testee_weight.getText().toString().trim(),
-                        testee_gender.getText().toString().trim(),
+                        testee_gender,
                         testee_id)
                 );
                 EmptyField();
@@ -86,6 +99,6 @@ public class Add_User_Activity extends AppCompatActivity implements DatePickerDi
         testee_birthday.setText("");
         testee_height.setText("");
         testee_weight.setText("");
-        testee_gender.setText("");
+
     }
 }

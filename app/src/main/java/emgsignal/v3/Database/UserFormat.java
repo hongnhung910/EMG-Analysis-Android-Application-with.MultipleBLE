@@ -2,17 +2,17 @@ package emgsignal.v3.Database;
 
 public class UserFormat {
     private String name, birthday;
-    private String height, weight, body_res;
+    private String height, weight, gender;
     private String id;
 
     public  UserFormat() {};
 
-    public UserFormat(String name, String birthday, String height, String weight, String body_res, String id) {
+    public UserFormat(String name, String birthday, String height, String weight, String gender, String id) {
         this.name = name;
         this.birthday = birthday;
         this.height = height;
         this.weight = weight;
-        this.body_res = body_res;
+        this.gender = gender;
         this.id = id;
     }
 
@@ -48,12 +48,12 @@ public class UserFormat {
         this.weight = weight;
     }
 
-    public String getBody_res() {
-        return body_res;
+    public String getGender() {
+        return gender;
     }
 
-    public void setBody_res(String body_res) {
-        this.body_res = body_res;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getId() {

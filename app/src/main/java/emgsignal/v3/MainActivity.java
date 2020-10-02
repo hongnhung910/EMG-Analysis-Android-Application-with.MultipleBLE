@@ -289,7 +289,7 @@ public class MainActivity extends AppCompatActivity
         viewport.setXAxisBoundsManual(true);
         viewport.setYAxisBoundsManual(true);
         viewport.setMinY(0);
-        viewport.setMaxY(100);
+        viewport.setMaxY(3500);
         viewport.setMinX(0);
         viewport.setMaxX(10000);
         viewport.setScrollable(true);
@@ -394,7 +394,7 @@ public class MainActivity extends AppCompatActivity
                 // firstDataBuffer = new double[3000];
 
                 if(txValue1 != null){
-                    for (int i = 0; i < 10; i++) {
+                    for (int i = 0; i < 20; i++) {
                         emg_1[i] = (txValue1[i*2]&0xff&0x3f) + (txValue1[i*2+1]&0xff&0x3f)*64;
                         data1Save.add(emg_1[i]);
                         lastX1=lastX1 + 1/fs;
@@ -407,7 +407,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 }
                 if(txValue2 != null){
-                    for (int i = 0; i < 10; i++) {
+                    for (int i = 0; i < 20; i++) {
                         emg_2[i] = (txValue2[i*2]&0xff&0x3f) + (txValue2[i*2+1]&0xff&0x3f)*64;
                         data2Save.add(emg_2[i]);
                         lastX2=lastX2 + 1/fs;
