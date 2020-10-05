@@ -46,6 +46,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -276,6 +277,7 @@ public class MainActivity extends AppCompatActivity
         GraphView graph =  findViewById(R.id.realtime_chart_1);
         graph.setTitleColor(Color.BLUE);
         graph.setTitle("Real-time chart 1");
+
         series_maternal_1 = new LineGraphSeries();
         series_maternal_1.setColor(Color.RED);
         series_maternal_1.setThickness(2);
@@ -283,6 +285,12 @@ public class MainActivity extends AppCompatActivity
         series_maternal_2 = new LineGraphSeries();
         series_maternal_2.setColor(Color.BLUE);
         series_maternal_2.setThickness(2);
+
+        series_maternal_1.setTitle("Left");
+        series_maternal_2.setTitle("Right");
+        graph.getLegendRenderer().setVisible(true);
+        graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+
         graph.addSeries(series_maternal_2);
 
         Viewport viewport = graph.getViewport();
