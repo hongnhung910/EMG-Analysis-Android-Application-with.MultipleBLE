@@ -231,10 +231,11 @@ public class MainActivity extends AppCompatActivity
                         btnSaveData.setText("Save");
                         //Save data
                         UserFormat selectedUserObject_1 = dbManager.getUser(id_testee);
-                        saveData.save(data1Save,selectedUserObject_1.getName(),selectedUserObject_1.getBirthday());
-                        saveData.save(data2Save,selectedUserObject_1.getName(),selectedUserObject_1.getBirthday());
+                        saveData.save(data1Save,id_testee,"_left",selectedUserObject_1.getBirthday() + "\n" + selectedUserObject_1.getGender()
+                        + "\n" + selectedUserObject_1.getHeight() + "\n" + selectedUserObject_1.getWeight());
+                        saveData.save(data2Save,id_testee,"_right",selectedUserObject_1.getBirthday());
                         Toast.makeText(MainActivity.this, "Data saved successfully",Toast.LENGTH_SHORT).show();
-
+                        resetData();
                     }
                 }
             }
@@ -265,7 +266,7 @@ public class MainActivity extends AppCompatActivity
         series_maternal_2.resetData(new DataPoint[] {
                 new DataPoint(lastX2, 0)
         });
-        initGraphMaternal1();
+        //initGraphMaternal1();
         timeSwapBuff = 0;
         customHandler.removeCallbacks(updateTimerThread);
         timerValue.setText("00 sec");

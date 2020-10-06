@@ -59,7 +59,7 @@ public class Add_User_Activity extends AppCompatActivity implements DatePickerDi
             @Override
             public void onClick(View v) {
                 dbManager = new DBManager(Add_User_Activity.this);
-                testee_id = testee_name.getText().toString().trim()+""+testee_birthday.getText().toString().replace("/", "");
+                testee_id = testee_name.getText().toString().trim().replaceAll("\\s+", "")+""+testee_birthday.getText().toString().replace("/", "");
                 int selectedGender = radioGroup_gender.getCheckedRadioButtonId();
                 if (selectedGender == R.id.radioBtn_male) testee_gender = "male";
                 else testee_gender = "female";

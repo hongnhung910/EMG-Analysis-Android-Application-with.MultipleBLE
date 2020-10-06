@@ -84,7 +84,6 @@ public class DeviceListActivity extends Activity {
         layoutParams.gravity=Gravity.TOP;
         layoutParams.y = 200;
 
-
         mHandler = new Handler();
         // Use this check to determine whether BLE is supported on the device.  Then you can
         // selectively disable BLE-related features.

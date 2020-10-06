@@ -151,7 +151,7 @@
                     android:id="@+id/radioBtn_female"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Famale"
+                    android:text="Female"
                     android:layout_marginLeft="@dimen/general_margin"/>
             </RadioGroup>
             <!--<EditText

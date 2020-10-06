@@ -13,9 +13,9 @@ import java.util.Calendar;
 
 public class SaveData extends AppCompatActivity {
 
-    public void save(final ArrayList<Double> dataSave, String username,
+    public void save(final ArrayList<Double> dataSave, String username, String note,
                      String testee_info) {
-
+        Log.i("SAVED USER INFORMATION ", "save: " + username + " info: " + testee_info);
                     File sdCard = Environment.getExternalStorageDirectory();
                     if (sdCard.exists()) {
                         File publicDcimDirPath = new File(sdCard.getAbsolutePath() + "/EMG_Data/" + username);
@@ -25,11 +25,11 @@ public class SaveData extends AppCompatActivity {
                             Log.i("making", "Creating Directory: " + publicDcimDirPath);
                         }
                         //get name of user
-                        int index = username.indexOf('-');
-                        String substring = username.substring(0,index).replaceAll("\\s+", "");
+                        /*int index = username.indexOf('-');
+                        String substring = username.substring(0,index).replaceAll("\\s+", "");*/
                         String nameFile = getDate();
-                        nameFile = nameFile +"_"+ substring;
-                        File newFile = new File(publicDcimDirPath, nameFile+".txt");
+                        nameFile = nameFile +"_"+ username;
+                        File newFile = new File(publicDcimDirPath, nameFile+note+".txt");
 
                         OutputStreamWriter writer = null;
                         try {
